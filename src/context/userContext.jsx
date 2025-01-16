@@ -12,6 +12,8 @@ export const UserProvider = ({ children }) => {
   const [sortOrder, setSortOrder] = useState("asc");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const usersPerPage = 6;
 
   //Fetch users
   useEffect(() => {
@@ -35,6 +37,7 @@ export const UserProvider = ({ children }) => {
       user.name.toLowerCase().includes(query.toLowerCase())
     );
     setFilteredUsers(filtered);
+    setCurrentPage(1); //Reset to page 1
   };
 
   // Handle sorting
@@ -48,6 +51,16 @@ export const UserProvider = ({ children }) => {
     setSortOrder(sortOrder === "asc" ? "desc" : "asc");
   };
 
+  //Paginated users
+  const indexOfLastUser = currentPage * usersPerPage;
+  const indexOfFirstUser = indexOfLastUser - usersPerPage;
+  const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
+
+  //change page
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   return (
     <UserContext.Provider
       value={{
@@ -58,6 +71,10 @@ export const UserProvider = ({ children }) => {
         error,
         handleSearch,
         handleSort,
+        currentPage,
+        usersPerPage,
+        handlePageChange,
+        currentUsers,
       }}
     >
       {children}
