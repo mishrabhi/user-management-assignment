@@ -25,3 +25,32 @@
 - A toggle option to switch between light and dark themes.
 
 - Provides better visibility and user comfort during different lighting conditions.
+
+### Technologies Used
+
+- **Frontend Framework:** React.js
+- **State Management:** Context API
+- **Styling:** Tailwind CSS
+- **Routing:** React Router
+
+### Installation:
+
+1. Clone the Repository:
+
+```
+git clone https://github.com/mishrabhi/user-management-app.git
+
+cd user-management-app
+```
+
+2. Install Dependencies:
+
+```
+npm install
+```
+
+3. Start the Development Server:
+
+```
+npm start
+```
