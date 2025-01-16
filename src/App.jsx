@@ -1,19 +1,22 @@
-import { useState } from "react";
-import "./App.css";
-import { Route, Routes } from "react-router-dom";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./components/HomePage";
-import UserDetails from "./components/UserDetails";
+import UserDetailsPage from "./components/UserDetails";
+import { UserProvider } from "./context/userContext";
 
 function App() {
   return (
-    <>
-      <div className="bg-gray-100 min-h-screen">
+    <UserProvider>
+      <Router>
         <Routes>
+          {/* Home Page */}
           <Route path="/" element={<HomePage />} />
-          <Route path="/users/:id" element={<UserDetails />} />
+
+          {/* User Details Page */}
+          <Route path="/users/:id" element={<UserDetailsPage />} />
         </Routes>
-      </div>
-    </>
+      </Router>
+    </UserProvider>
   );
 }
 

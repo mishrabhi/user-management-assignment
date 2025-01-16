@@ -1,40 +1,38 @@
-import axios from "axios";
-import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useContext } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { UserContext } from "../context/userContext";
 
-const UserDetails = () => {
-  const { id } = useParams();
+const UserDetailsPage = () => {
+  const { id } = useParams(); // Get the user ID from the route parameter
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const { users } = useContext(UserContext);
 
-  useEffect(() => {
-    axios
-      .get(`https://jsonplaceholder.typicode.com/users/${id}`)
-      .then((response) => {
-        setUser(response.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError("Failed to fetch user details");
-        setLoading(false);
-      });
-  }, [id]);
+  // Find the user details
+  const user = users.find((user) => user.id === parseInt(id));
 
-  if (loading) return <div className="text-center py-4">Loading...</div>;
-  if (error)
-    return <div className="text-center text-red-500 py-4">{error}</div>;
+  if (!user) {
+    return (
+      <div className="text-center py-4">
+        <p className="text-red-500">User not found!</p>
+        <button
+          className="bg-blue-500 text-white py-2 px-4 rounded mt-4"
+          onClick={() => navigate("/")}
+        >
+          Go Back
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto py-8 px-4">
       <button
-        onClick={() => navigate(-1)}
-        className="bg-gray-300 px-4 py-2 rounded mb-4"
+        className="bg-blue-500 text-white py-2 px-4 rounded mb-4"
+        onClick={() => navigate("/")}
       >
         Go Back
       </button>
-      <div className="bg-white p-4 rounded shadow">
+      <div className="bg-white shadow-md rounded p-6">
         <h2 className="text-2xl font-bold mb-4">{user.name}</h2>
         <p>
           <strong>Email:</strong> {user.email}
@@ -46,18 +44,15 @@ const UserDetails = () => {
           <strong>Company:</strong> {user.company.name}
         </p>
         <p>
-          <strong>Website:</strong>{" "}
-          <a
-            href={`http://${user.website}`}
-            target="_blank"
-            className="text-blue-500 hover:underline"
-          >
-            {user.website}
-          </a>
+          <strong>Website:</strong> {user.website}
+        </p>
+        <p>
+          <strong>Address:</strong>{" "}
+          {`${user.address.street}, ${user.address.city}`}
         </p>
       </div>
     </div>
   );
 };
 
-export default UserDetails;
+export default UserDetailsPage;
