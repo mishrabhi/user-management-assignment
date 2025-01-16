@@ -3,13 +3,12 @@ import { useParams, useNavigate } from "react-router-dom";
 import { UserContext } from "../context/userContext";
 
 const UserDetailsPage = () => {
-  const { id } = useParams(); // Get the user ID from the route parameter
+  const { id } = useParams(); // user ID from the route parameter
   const navigate = useNavigate();
   const { users } = useContext(UserContext);
 
   // Find the user details
   const user = users.find((user) => user.id === parseInt(id));
-
   if (!user) {
     return (
       <div className="text-center py-4">
@@ -32,7 +31,7 @@ const UserDetailsPage = () => {
       >
         Go Back
       </button>
-      <div className="bg-white shadow-md rounded p-6">
+      <div className="bg-white dark:bg-gray-800 dark:border-gray-700 border rounded-md shadow-md p-6 text-gray-900 dark:text-gray-100">
         <h2 className="text-2xl font-bold mb-4">{user.name}</h2>
         <p>
           <strong>Email:</strong> {user.email}
